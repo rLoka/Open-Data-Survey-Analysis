@@ -1,0 +1,218 @@
+---
+title: "Deskriptivna statistika 1"
+author: "Diana Šimić"
+date: "3. listopada 2017."
+output: html_document
+---
+
+# Uvod u Rmarkdown
+
+R markdown je jednostavan način za pisanje statističkih izvještaja koji sadrže i naredbe za analizu podataka i njihove rezultate. Markdown dokument otvarate klikom na ikonu sa znakom + ispod izbornika "File" i izborom "R Markdown...". Dokument spremamo u radnu mapu klikom na ikonu diskete na gornjem rubu prozora za uređivanje dokumenta. Naziv datoteke treba imati nastavak ".Rmd". 
+
+Uređivanje dokumenta je jednostavno, a primjeri uređivanja dani su u ovom dokumentu. `#` označava naslov i podnaslove. Što je veći broj znakova `###` to je naslov nižeg reda. `*` ispred i iza dijela teksta označava taj tekst kao *kurziv ili italik*. Dvije zvjezdice označavaju **podebljani ili bold** tekst. Superskript omeđujemo znakom `^` ^ovako^.
+
+Liste formiramo jednostavno tako da na početak elemenata liste stavimo zvjezdicu:
+
+* prvi slučaj
+* drugi slučaj 
+* treći slučaj
+
+Ako želimo nabrajati umjesto zvjezdice stavimo broj:
+
+2. prvi slučaj
+1. drugi slučaj
+5. treći slučaj
+
+Važno je da pri tom ostavite jedan prazan red ispred liste. Uočite da Rmarkdown počinje brojati od broja koji ste upotrijebili u prvom nabrojanom slučaju, ali nije važno koje ste brojeve napisali nakon toga.
+
+Na gornjem rubu prozora za uređivanje dokumenta nalazi se ikona koja izgleda kao klupko vune. Pokraj nje je napisano Knit HTML. Klikom na tu ikonu RStudio će iz vašeg tekstualnog markdown dokumenta kreirati html dokument koji možete gledati u bilo kojem pregledniku. Pokušajte to sada napraviti.
+
+# Uvod u R
+
+Već smo rekli da je R i programski jezik i programsko okruženje. RStudio je razvojno okruženje u kojem je jednostavnije unositi naredbe, pisati i testirati skripte (programe). R markdown nam pak omogućava da povežemo analizu podataka i opis rezultata u jedan dokument.
+
+Da bismo u Rmarkdown dokument unijeli R-ove naredbe moramo otvoriti tzv. komadić programa (engleski chunk). To možemo napraviti klikom na zelenu ikonu sa slovom C i tekstom Chunks i izborom opcije "Insert Chunk". Evo što dobivamo:
+
+```{r}
+2+3
+```
+
+U prazan redak između oznaka početka i završetka komadića možemo pisati naredbe R-a, a u izlaznom html dokumentu će se pojaviti rezultat. Iz gornjeg primjera vidimo kako R zna zbrajati. U sljedećem primjeru vidjet ćemo kako koristiti i ostale aritmetičke operacije. Znak `#` označava početak komentara. R jednostavno ignorira sve što piše u nastavku retka, a nama to omogućava da uz naredbe dodamo komentare i podsjetnike. Ja sam koristila komentar da opišem razne operacije koje možemo provoditi u R-u.
+
+```{r}
+1 + 3    # zbrajanje
+5 - 2    # oduzimanje
+2 * 7    # množenje
+6 / 4    # dijeljenje
+2 ^ 5    # potenciranje
+```
+R ima i cijeli niz ugrađenih matematičkih funkcija. Evo nekoliko primjera
+
+```{r}
+log(12)   # prirodni logaritam
+exp(2.5)  # eksponencijalna funkcija
+abs(-1.4) # apsolutna vrijednost
+sqrt(4)   # drugi korijen
+```
+
+# Vrste varijabli
+
+Rezultate aritmetičkih i drugih operacija možemo spremiti u objekt. Objekt ima ime koje obavezno počinje slovom, a u imenu možemo koristiti i znamenke i znakove "." i "_". R razlikuje velika i mala slova pa objekti `A` i `a` nisu iste. Objektu dodjeljujemo vrijednost pomoću operatora `<-` ili `=` ovako:
+
+```{r}
+a <- 5*3-1   # numerički cijeli broj (integer)
+b <- T       # logička vrijednost - može poprimiti vrijednosti istina (T) i laž (F)
+c = "Neki tekst" # tekstualna vrijednost - vrijednosti su nizovi znakova
+```
+
+Vrijednost objekta možemo otkriti tako da R-u zadamo kao naredbu samo ime objekta - R će ispisati njegovu vrijednost:
+
+```{r}
+a
+c
+b
+```
+
+Brojevi i tekstovi su najjednostavnije vrste objekata koje u R-u zovemo atomarni objekti. S numeričkim objektima možemo računati isto kao s brojevima:
+
+```{r}
+a-10
+```
+
+Već smo vidjeli da u statistici skup podataka obično izgleda kao tablica u kojoj su stupci varijable, a reci opservacije. Varijabla u R-u je vektor koji se sastoji od istovrsnih atomarnih objekata (elemenata). Vektor zadajemo pomoću funkcije "c":
+
+```{r}
+a = c(1, 3, 5, 3, 1)
+a
+b = c("A", "B", "C", "B", "A")
+b
+```
+
+Objekt `a` je numerički vektor, a objekt `b` tekstualni vektor. Numerički vektori služe za spremanje kvantitativnih varijabli. Kvalitativne varijable spremamo u posebnu vrstu varijable koju u R-u zovemo faktor. Tekstualni ili numerički objekt možemo pretvoriti u faktor pomoću funkcije `factor()`:
+
+```{r}
+b.f <- factor(b)
+b.f
+```
+
+Dok su vrijednosti tekstualnog vektora ispisane pod navodnicima, vrijednosti faktora ispisane su bez navodnika, a nakon ispisa sadržaja faktora navedeni su svi modaliteti (vrijednosti) koje on može poprimiti.
+
+Broj elemenata u vektoru u R-u se zove dužina vektora, a možemo ju naći pomoću funkcije `length()`:
+
+```{r}
+length(a)     # broj elemenata vektora a
+```
+
+Pojedine elemente vektora možemo izvaditi pomoću operatora `[]`. Npr. ako želimo izvući samo 3. element vektora `a` pisati ćemo 
+
+```{r}
+a[3]
+```
+
+Umjesto jednog elementa možemo istovremeno izvući više elemenata vektora tako što ćemu unutar uglatih zagrada napisati vektor s rednim brojevima elemenata koji nam trebaju:
+
+```{r}
+a[c(3,5,1)]   # vektor koji sadrži 3., 5. i 1 element vektora a
+```
+
+
+# Tablica podataka
+
+U R-u tablicu podataka zovemo podatkovni okvir (eng. *data frame*). Nekoliko vektora možemo povezati u tablicu podataka pomoću funkcije `data.frame()`:
+
+```{r}
+podaci <- data.frame(V1 = a, V2 = b.f)
+podaci
+```
+
+Ovdje smo stvorili jednu tablicu podataka s 5 opservacija i 2 varijable. Varijablama smo dodijelili imena V1 i V2 i sadržaj koji smo preuzeli iz vektora a i b.f.
+
+Iako podatke možemo unositi tako da definiramo svaku varijablu posebno, a zatim ih povezujemo u tablicu podataka, obično podatke preuzimamo u R iz neke datoteke. Vrlo često to je excel datoteka u kojoj su u prvom retku zapisana imena varijabli. Za čitanje excel datoteka u R-u potreban nam je paket XLConnect. Paket učitavamo funkcijom `require()`, a zatim koristimo funkcije paketa XLConnect za učitavanje excel datoteke:
+
+```{r}
+require(XLConnect)
+wb <- loadWorkbook(filename="Titanic.persons.xls")           # učitaj datoteku
+Titanic <- readWorksheet(wb, sheet=1, startRow=1, header=T)  # učitaj radni list summary(Titanic)
+```
+
+U gornjem primjeru koristili smo funkciju `loadWorkbook()` za učitavanje excel datoteke i funkciju `readWorksheet()` za čitanje jednog radnog lista iz te datoteke u tablicu podataka. Parametar "sheet" odnosi se na redni broj lista u excel datoteci, "startRow" na početni redak - tako možemo preskočiti početne prazne retke ili pročitati samo dio datoteke, "header" kad je T označava da se u prvom retku nalaze nazivi varijabli, a ne podaci.
+
+```{r}
+summary(Titanic)
+```
+
+Funkcija `summary()` daje kratki prikaz objekta. Ovdje vidimo da tablica podataka Titanic ima dvije varijable koje se zovu Karta i Status i da su to tekstualni vektori. Da bi R znao da se radi o kvalitativnim varijablama moramo ih pretvoriti u faktore. 
+
+Kad je varijabla dio tablice podataka onda uz njezino ime moramo dodati i ime tablice podataka u kojoj se nalazi. Ime tablice podataka odvajamo od imena varijable znakom $. Evo kako ćemo varijable Karta i Status transformirati u faktore:
+
+```{r}
+Titanic$Karta <- factor(Titanic$Karta)
+Titanic$Status <- factor(Titanic$Status)
+summary(Titanic)
+```
+
+Sada je rezultat funkcije `summary()` drugačiji. Za svaku varijablu dobili smo tablicu frekvencija - dakle deskriptivnu analizu kvalitativnih varijabli. Funkcija `summary()` međutim prikazuje samo frekvencije prvih nekoliko modaliteta varijable. Ako želimo dobiti potpunu tablicu koristimo funkciju `table()`:
+
+```{r}
+table(Titanic$Karta)
+table(Titanic$Status)
+```
+
+Primijetite da je R automatski složio modalitete varijable `Titanic$Karta` i `Titanic$Status` abecednim redom. Redoslijed prikazivanja modaliteta može se i promijeniti pomoću funkcije `factor()` s dodatnim parametrima:
+
+```{r}
+levels(Titanic$Karta)
+Titanic$Karta <- factor(Titanic$Karta, levels=levels(Titanic$Karta)[c(3,1,4,2)])
+summary(Titanic$Karta)
+pom <- table(Titanic$Karta)    # tablica frekvencija
+addmargins(pom)                # dodavanje marginalnih zbrojeva na tablicu
+prop.table(pom)                # izračunavanje proporcija, tj. relativnih frekvencija
+
+```
+
+Stučasti dijagram razdiobe frekvencija kvalitativne varijable dobivamo funkcijom `barplot()`
+
+```{r}
+barplot(table(Titanic$Karta))
+```
+
+Samo za informaciju, možemo dodati cijeli niz parametara koji uređuju izgled stupčastog dijagrama:
+
+```{r}
+op <- par(no.readonly=T)
+par(mar=c(5, 7, 4, 2)+0.1)
+barplot(table(Titanic$Karta),
+        horiz=T,        # vodoravni stupčasti dijagram
+        col=rainbow(4), # stupci u duginim bojama
+        main = "Razdioba putnika Titanika s obzirom na klasu", # naslov
+        xlab = "Broj putnika",          # naslov uz os x  
+        ylab = "Klasa\n\n\n",    # naslov uz os y
+        las=1,              # vodoravni smjer pisanja opisa na osi y
+        xlim=c(0,1000)      # raspon vrijednosti na osi x
+        )
+par(op)
+```
+
+Stupčasti dijagram s relativnim proporcijama mogli smo dobiti ovako:
+
+```{r}
+barplot(prop.table(table(Titanic$Karta)))       # proporcije
+barplot(100*prop.table(table(Titanic$Karta)))   # postotci
+```
+
+Kontingencijsku tablicu za dvije kvalitativne varijable također dobivamo pomoću funkcije `table()`:
+
+```{r}
+pom <- table(Titanic)            # izračunavanje kontingencijske tablice
+pom                              # ispisivanje kontingencijske tablice
+prop.table(pom,margin=1)         # proporcije po recima
+prop.table(pom,margin=2)         # proporcije po stupcima
+addmargins(pom,margin=c(1,2))    # dodavanje marginalnih suma po recima i stupcima
+```
+
+Zajedničku razdiobu dvije kvalitativne varijable prikazujemo mozaik dijagramom:
+
+```{r}
+mosaicplot(pom)
+```
+
